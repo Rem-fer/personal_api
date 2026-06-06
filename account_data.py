@@ -262,7 +262,6 @@ def get_balance_w_labels():
     return balances
 
 
-
 # AUTH_CODE = ""   # Changes everytime — get from TrueLayer console
 # PROVIDER = ""    # e.g. "BARCLAYCARD", "BARCLAYS", "REVOLUT"
 # IS_CARD = False  # Set to True for credit cards accounts (Barclaycard, Amex)

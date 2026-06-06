@@ -11,7 +11,7 @@ app = FastAPI()
 ##Key metrics
 @app.get("/spending")
 def get_spend(time_period: str, acc_type: str):
-    return sq.get_spending(time_period,acc_type)
+    return sq.get_spending(time_period, acc_type)
 
 @app.get("/deep_work")
 def get_dw(time_period: str):
@@ -22,9 +22,9 @@ def get_days_meditated(time_period: str):
     return sq.get_days_meditated(time_period)
 
 @app.get("/approaches")
-def get_approaches(time_period:str):
+def get_approaches(time_period: str):
     return sq.get_approaches(time_period)
-#Focus
+
 @app.get("/focus")
 def get_week_focus(year: int, week_num: int):
     return sq.get_week_focus(year, week_num)
@@ -53,9 +53,7 @@ def get_balances_with_labels():
 @app.get("/banking/need_review")
 def need_review():
     return sq.need_review()
-
 #-----------TRACKING----------#
-
 @app.get("/meditation/streak")
 def get_med_streak():
     return sq.current_med_streak()
@@ -76,16 +74,24 @@ def get_dw_per_day():
 
 @app.get("/review/metrics")
 def get_weekly_review_metrics(week: int, year: int):
-    return sq.get_weekly_review_metrics(week,year)
+    result = sq.get_weekly_review_metrics(week, year)
+    if not result:
+        return None
+    dw, med, approaches, spending = result
+    return {
+        "dw": dw,
+        "med": med,
+        "approaches": approaches,
+        "spending": spending
+    }
 
 @app.get("/review/review-exists")
-def review_exists(week:int, year:int):
-    return sq.review_exists(week,year)
+def review_exists(week: int, year: int):
+    return sq.review_exists(week, year)
 
 @app.get("/review/submitted")
-def review_text_submitted(week:int, year: int):
-    return sq.review_text_submitted(week,year)
-
+def review_text_submitted(week: int, year: int):
+    return sq.review_text_submitted(week, year)
 
 # Generate weekly focus
 class GenerateWeeklyFocus(BaseModel):
@@ -96,7 +102,6 @@ class GenerateWeeklyFocus(BaseModel):
 @app.post("/generate-focus")
 def generate_focus_route(request: GenerateWeeklyFocus):
     return generate_weekly_focus(request.plus, request.minus, request.next_)
-
 #Save weekly focus
 
 class SaveWeeklyReviewText(BaseModel):
